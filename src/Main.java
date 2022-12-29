@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import databases.MoviesDataBase;
 import databases.UserDataBase;
 import pages.*;
@@ -72,6 +74,7 @@ public class Main {
             invoker.execute(action);
         }
         invoker.getRecommandation();
+
         MoviesPage.getInstance().setMovies(new ArrayList<Movie>());
         Authenticated.getInstance().setUser(null);
         MoviesDataBase.setInstanceNull();

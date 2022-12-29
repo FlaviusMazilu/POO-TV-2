@@ -59,7 +59,6 @@ public final class User implements Observer {
             genresOrdered.add(genreMaxLikes);
             genresLiked.remove(genreMaxLikes);
         }
-        System.out.println("---->" + genresOrdered);
         ArrayList<Movie> moviesSorted = new ArrayList<>();
 
         for (Movie movie : MoviesDataBase.getInstance().getMoviesList()) {

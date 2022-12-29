@@ -1,5 +1,7 @@
 package utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import databases.MoviesDataBase;
 import databases.UserDataBase;
 import input.ActionsInput;
@@ -24,11 +26,17 @@ public class Invoker {
 
     public void getRecommandation() {
         User user = Authenticated.getInstance().getUser();
+
         if (user != null && user.getCredentials().getAccountType().equals("premium")) {
             String movie = user.checkMovieRecommended();
             Notification notification = new Notification(movie, "Recommendation");
             user.update(notification);
-            OutputCreater.addObject(null, null, user);
+
+            ObjectNode objectNode = IO.objectMapper.createObjectNode();
+            objectNode.put("error", (JsonNode) null);
+            objectNode.put("currentMoviesList", (JsonNode) null);
+            objectNode.putPOJO("currentUser", new User(user));
+            IO.output.add((objectNode));
         }
     }
     public void execute(ActionsInput action) {
@@ -36,8 +44,6 @@ public class Invoker {
             Authenticated.getInstance().setUser(null);
             page = NotAuthenticated.getInstance();
             // the number of pages that you can go back to turns to 0
-//            pagesStack.forEach(System.out::println);
-//            System.out.println("==================");
             pagesStack = new LinkedList<>();
         }
 

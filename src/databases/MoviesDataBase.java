@@ -80,7 +80,7 @@ public final class MoviesDataBase implements Observable {
 
         if (feature.equals("add")) {
             if (movies.containsKey(movie.getName())) {
-                OutputCreater.addObject("Movie already exists", null, null);
+                OutputCreater.addObject("Error", null, null);
                 return;
             }
             addMovie(movie);
@@ -88,7 +88,7 @@ public final class MoviesDataBase implements Observable {
         } else {
             String movieName = movie.getName();
             if (movies.remove(movieName) == null) {
-                OutputCreater.addObject("delete movie error", null, null);
+                OutputCreater.addObject("Error", null, null);
                 return;
             }
             notifyObservers(movie, feature);
@@ -128,6 +128,11 @@ public final class MoviesDataBase implements Observable {
                     // if it has been deleted
                     if (movieAux.getName().equals(movie.getName())) {
                         user.getPurchasedMovies().remove(movieAux);
+                        if (user.getCredentials().getAccountType().equals("premium")) {
+                            user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() + 1);
+                        } else {
+                            user.setTokensCount(user.getTokensCount() + 2);
+                        }
                         break;
                     }
                 }
@@ -154,11 +159,7 @@ public final class MoviesDataBase implements Observable {
                 }
                 user.getRatings().remove(movie.getName());
                 movies.remove(movie.getName());
-                if (user.getCredentials().getAccountType().equals("premium")) {
-                    user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() + 1);
-                } else {
-                    user.setTokensCount(user.getTokensCount() + 2);
-                }
+
             }
         }
     }

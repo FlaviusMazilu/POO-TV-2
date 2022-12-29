@@ -22,7 +22,7 @@ public class SeeDetails extends Page {
         User user = Authenticated.getInstance().getUser();
         for (String subscription : user.getSubscribedGenres()) {
             if (subscription.equals(subscribedGenre)) {
-                OutputCreater.addObject("Subscribed already", null, null);
+                OutputCreater.addObject("Error", null, null);
                 return;
             }
         }
@@ -32,7 +32,7 @@ public class SeeDetails extends Page {
                 return;
             }
         }
-        OutputCreater.addObject("Genre not found", null, null);
+        OutputCreater.addObject("Erorr", null, null);
     }
     private SeeDetails() {
         pages = new HashMap<>();
@@ -61,7 +61,7 @@ public class SeeDetails extends Page {
 
         for (Movie moviePurchased : user.getPurchasedMovies()) {
             if (moviePurchased.getName().equals(movie.getName())) {
-                OutputCreater.addObject("Already purchased", null, null);
+                OutputCreater.addObject("Error", null, null);
                 return;
             }
         }

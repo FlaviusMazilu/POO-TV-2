@@ -71,7 +71,7 @@ public class Main {
         for (ActionsInput action : IO.inputData.getActions()) {
             invoker.execute(action);
         }
-
+        invoker.getRecommandation();
         MoviesPage.getInstance().setMovies(new ArrayList<Movie>());
         Authenticated.getInstance().setUser(null);
         MoviesDataBase.setInstanceNull();
@@ -82,7 +82,6 @@ public class Main {
         char[] inputPath = args[0].toCharArray();
         String outputPath = "C:\\Users\\mazil\\IdeaProjects\\proiect2\\checker\\resources\\out\\"
                 + args[1] + inputPath[inputPath.length - 6] + ".json";
-//        System.out.println(args[0]);
         objectWriter.writeValue(new File(outputPath), IO.output);
     }
 }

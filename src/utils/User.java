@@ -1,9 +1,14 @@
 package utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import databases.MoviesDataBase;
+import pages.Authenticated;
+import pages.MoviesPage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 
 public final class User implements Observer {
     private Credentials credentials;
@@ -22,6 +27,68 @@ public final class User implements Observer {
 
     public void addSubscription(String genre) {
         subscribedGenres.add(genre);
+    }
+
+    public String checkMovieRecommended() {
+        HashMap<String, Integer> genresLiked = new HashMap<>();
+        for (Movie movieLiked : likedMovies) {
+            for (String genre : movieLiked.getGenres()) {
+                if (genresLiked.containsKey(genre)) {
+                    int nrLikes = genresLiked.get(genre);
+                    genresLiked.put(genre, nrLikes + 1);
+                } else {
+                    genresLiked.put(genre, 1);
+                }
+            }
+        }
+        ArrayList<String> genresOrdered = new ArrayList<>();
+        while (!genresLiked.isEmpty()) {
+            int max = -1;
+            String genreMaxLikes = "null";
+            for (Map.Entry<String, Integer> entry : genresLiked.entrySet()) {
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    genreMaxLikes = entry.getKey();
+                } else {
+                    if (entry.getValue() == max && entry.getKey().compareTo(genreMaxLikes) < 0) {
+                        max = entry.getValue();
+                        genreMaxLikes = entry.getKey();
+                    }
+                }
+            }
+            genresOrdered.add(genreMaxLikes);
+            genresLiked.remove(genreMaxLikes);
+        }
+        System.out.println("---->" + genresOrdered);
+        ArrayList<Movie> moviesSorted = new ArrayList<>();
+
+        for (Movie movie : MoviesDataBase.getInstance().getMoviesList()) {
+            int ok = 1;
+            for (String countryBanned : movie.getCountriesBanned()) {
+                if (countryBanned.compareTo(getCredentials().getCountry()) == 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+            if (ok == 1) {
+                moviesSorted.add(movie);
+            }
+        }
+
+        moviesSorted.sort((o1, o2) -> o2.getNumLikes() - o1.getNumLikes());
+
+        String movieRecommended = "No recommendation";
+        for (String genreMostLiked : genresOrdered) {
+            for (Movie movieToRecommend : moviesSorted) {
+                if (!userHasWatched(movieToRecommend.getName())) {
+                    if (movieToRecommend.hasGenre(genreMostLiked)) {
+                        movieRecommended = movieToRecommend.getName();
+                        break;
+                    }
+                }
+            }
+        }
+        return movieRecommended;
     }
     @Override
     public void update(Notification notification) {
@@ -174,5 +241,14 @@ public final class User implements Observer {
 
     public void setRatings(HashMap<String, Double> ratings) {
         this.ratings = ratings;
+    }
+
+    public boolean userhasLiked(String name) {
+        for (Movie movie : likedMovies) {
+            if (movie.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

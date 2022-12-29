@@ -59,6 +59,12 @@ public class SeeDetails extends Page {
         int tokens = user.getTokensCount();
         String accountType = user.getCredentials().getAccountType();
 
+        for (Movie moviePurchased : user.getPurchasedMovies()) {
+            if (moviePurchased.getName().equals(movie.getName())) {
+                OutputCreater.addObject("Already purchased", null, null);
+                return;
+            }
+        }
         if (accountType.equals("premium") && user.getNumFreePremiumMovies() > 0) {
             user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() - 1);
         } else {
@@ -68,12 +74,7 @@ public class SeeDetails extends Page {
             }
             user.setTokensCount(tokens - Cons.PRICE_MOVIE);
         }
-        for (Movie moviePurchased : user.getPurchasedMovies()) {
-            if (moviePurchased.getName().equals(movie.getName())) {
-                OutputCreater.addObject("Error", null, null);
-                return;
-            }
-        }
+
         user.getPurchasedMovies().add(movie);
 
         ArrayList<Movie> listOutput = new ArrayList<>();
@@ -87,6 +88,9 @@ public class SeeDetails extends Page {
             OutputCreater.addObject("Error", null, null);
             return;
         }
+        if (user.userHasWatched(movie.getName())) {
+            return;
+        }
         user.getWatchedMovies().add(movie);
 
         ArrayList<Movie> listOutput = new ArrayList<>();
@@ -98,6 +102,9 @@ public class SeeDetails extends Page {
         User user = Authenticated.getInstance().getUser();
         if (!user.userHasWatched(movie.getName())) {
             OutputCreater.addObject("Error", null, null);
+            return;
+        }
+        if (user.userhasLiked(movie.getName())) {
             return;
         }
         user.getLikedMovies().add(movie);
@@ -119,7 +126,6 @@ public class SeeDetails extends Page {
             return;
         }
         movie.rateOp(actions.getRate(), user);
-
         ArrayList<Movie> listOutput = new ArrayList<>();
         listOutput.add(movie);
         OutputCreater.addObject(null, listOutput, user);

@@ -121,5 +121,45 @@ public final class MoviesDataBase implements Observable {
                 }
             }
         }
+        if (feature.equals("delete")) {
+            for (Map.Entry<String, User> entry : userDB.getDatabase().entrySet()) {
+                User user = entry.getValue();
+                for (Movie movieAux : user.getPurchasedMovies()) {
+                    // if it has been deleted
+                    if (movieAux.getName().equals(movie.getName())) {
+                        user.getPurchasedMovies().remove(movieAux);
+                        break;
+                    }
+                }
+                for (Movie movieAux : user.getWatchedMovies()) {
+                    // if it has been deleted
+                    if (movieAux.getName().equals(movie.getName())) {
+                        user.getWatchedMovies().remove(movieAux);
+                        break;
+                    }
+                }
+                for (Movie movieAux : user.getLikedMovies()) {
+                    // if it has been deleted
+                    if (movieAux.getName().equals(movie.getName())) {
+                        user.getLikedMovies().remove(movieAux);
+                        break;
+                    }
+                }
+                for (Movie movieAux : user.getRatedMovies()) {
+                    // if it has been deleted
+                    if (movieAux.getName().equals(movie.getName())) {
+                        user.getRatedMovies().remove(movieAux);
+                        break;
+                    }
+                }
+                user.getRatings().remove(movie.getName());
+                movies.remove(movie.getName());
+                if (user.getCredentials().getAccountType().equals("premium")) {
+                    user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() + 1);
+                } else {
+                    user.setTokensCount(user.getTokensCount() + 2);
+                }
+            }
+        }
     }
 }

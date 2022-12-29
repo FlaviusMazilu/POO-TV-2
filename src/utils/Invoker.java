@@ -22,6 +22,15 @@ public class Invoker {
         this.page = NotAuthenticated.getInstance();
     }
 
+    public void getRecommandation() {
+        User user = Authenticated.getInstance().getUser();
+        if (user != null && user.getCredentials().getAccountType().equals("premium")) {
+            String movie = user.checkMovieRecommended();
+            Notification notification = new Notification(movie, "Recommendation");
+            user.update(notification);
+            OutputCreater.addObject(null, null, user);
+        }
+    }
     public void execute(ActionsInput action) {
         if (page instanceof LogoutPage) {
             Authenticated.getInstance().setUser(null);

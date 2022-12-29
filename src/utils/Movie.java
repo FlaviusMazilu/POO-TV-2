@@ -49,6 +49,15 @@ public final class Movie {
     public void likeOp() {
         numLikes++;
     }
+
+    public boolean hasGenre(String genre) {
+        for (String genreMovie : getGenres()) {
+            if (genre.equals(genreMovie)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void rateOp(final double rate, User user) {
         if (user.getRatings().containsKey(name)) {
             double ratingAcc = user.getRatings().get(name);
@@ -57,7 +66,6 @@ public final class Movie {
             if (numRatings > 0) {
                 rating = sumRates / numRatings;
             }
-            System.out.println(rating + " " + name);
         } else {
             numRatings++;
             sumRates += rate;

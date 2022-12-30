@@ -6,8 +6,12 @@ public abstract class Page {
     abstract public Page changePage(ActionsInput action);
     abstract public Page onPage(ActionsInput action, UserDataBase userDB);
     abstract public void setPages();
-    public void subscribeAction(String subscribedGenre) {
+    public void subscribeAction(ActionsInput actions) {
         OutputCreater.addObject("Error", null, null);
+    }
+
+    public Page defaultAction() {
+        return this;
     }
 
 }

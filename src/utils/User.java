@@ -92,7 +92,6 @@ public final class User implements Observer {
     @Override
     public void update(Notification notification) {
         notifications.add(notification);
-        //TODO update pentru deleteMovie ++tokens/freeMovie
         //TODO make default action pentru fiecare pagina
     }
     public User(final User user) {

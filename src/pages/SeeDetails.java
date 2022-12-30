@@ -18,7 +18,8 @@ public class SeeDetails extends Page {
     private Movie movie;
 
     @Override
-    public void subscribeAction(String subscribedGenre) {
+    public void subscribeAction(ActionsInput actionsInput) {
+        String subscribedGenre = actionsInput.getSubscribedGenre();
         User user = Authenticated.getInstance().getUser();
         for (String subscription : user.getSubscribedGenres()) {
             if (subscription.equals(subscribedGenre)) {

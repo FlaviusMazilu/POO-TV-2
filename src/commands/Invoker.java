@@ -1,13 +1,13 @@
 package commands;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import commands.CommandsFactory;
 import databases.MoviesDataBase;
 import databases.UserDataBase;
 import input.ActionsInput;
-import pages.*;
-import utils.IO;
+import pages.Page;
+import pages.LogoutPage;
+import pages.NotAuthenticated;
+import pages.Authenticated;
+
 import utils.Notification;
 import utils.OutputCreater;
 import utils.User;
@@ -15,13 +15,13 @@ import utils.User;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Invoker {
+public final class Invoker {
     ArrayList<Page> previousPages;
     private final UserDataBase userDB;
     private final MoviesDataBase moviesDB;
     private Page page;
     private LinkedList<Page> pagesStack;
-    public Invoker(UserDataBase userDB, MoviesDataBase moviesDB) {
+    public Invoker(final UserDataBase userDB, final MoviesDataBase moviesDB) {
         previousPages = new ArrayList<>();
         pagesStack = new LinkedList<>();
         this.userDB = userDB;
@@ -29,6 +29,9 @@ public class Invoker {
         this.page = NotAuthenticated.getInstance();
     }
 
+    /**
+     * Method to construct a recommendation for the logged-in user if it's a premium account
+     */
     public void getRecommandation() {
         User user = Authenticated.getInstance().getUser();
 
@@ -40,7 +43,12 @@ public class Invoker {
             OutputCreater.addObject(user);
         }
     }
-    public void execute(ActionsInput action) {
+
+    /**
+     * Method which executes the command specified at action.getType()
+     * @param action: action from input
+     */
+    public void execute(final ActionsInput action) {
         if (page instanceof LogoutPage) {
             Authenticated.getInstance().setUser(null);
             page = NotAuthenticated.getInstance();

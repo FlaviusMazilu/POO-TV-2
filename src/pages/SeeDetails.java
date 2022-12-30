@@ -2,7 +2,6 @@ package pages;
 
 import input.ActionsInput;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import utils.User;
 import utils.Movie;
@@ -13,12 +12,12 @@ import databases.UserDataBase;
 public class SeeDetails extends Page {
 
     private static SeeDetails instance;
-    private HashMap<String, Page> pages;
+    private final HashMap<String, Page> pages;
 
     private Movie movie;
 
     @Override
-    public void subscribeAction(ActionsInput actionsInput) {
+    public void subscribeAction(final ActionsInput actionsInput) {
         String subscribedGenre = actionsInput.getSubscribedGenre();
         User user = Authenticated.getInstance().getUser();
         for (String subscription : user.getSubscribedGenres()) {
@@ -33,7 +32,7 @@ public class SeeDetails extends Page {
                 return;
             }
         }
-        OutputCreater.addObject("Erorr", null, null);
+        OutputCreater.addObject("Error", null, null);
     }
 
     private SeeDetails() {
@@ -58,7 +57,7 @@ public class SeeDetails extends Page {
         }
     }
 
-    private void purchase(final ActionsInput action) {
+    private void purchase() {
         User user = Authenticated.getInstance().getUser();
         int tokens = user.getTokensCount();
         String accountType = user.getCredentials().getAccountType();
@@ -80,13 +79,10 @@ public class SeeDetails extends Page {
         }
 
         user.getPurchasedMovies().add(movie);
-
-        ArrayList<Movie> listOutput = new ArrayList<>();
-        listOutput.add(movie);
-        OutputCreater.addObject(null, listOutput, user);
+        OutputCreater.addObject(movie, user);
     }
 
-    private void watch(final ActionsInput action) {
+    private void watch() {
         User user = Authenticated.getInstance().getUser();
         if (!user.userHasPurchased(movie.getName())) {
             OutputCreater.addObject("Error", null, null);
@@ -96,14 +92,11 @@ public class SeeDetails extends Page {
             return;
         }
         user.getWatchedMovies().add(movie);
-
-        ArrayList<Movie> listOutput = new ArrayList<>();
-        listOutput.add(movie);
-        OutputCreater.addObject(null, listOutput, user);
+        OutputCreater.addObject(movie, user);
 
     }
 
-    private void like(final ActionsInput action) {
+    private void like() {
         User user = Authenticated.getInstance().getUser();
         if (!user.userHasWatched(movie.getName())) {
             OutputCreater.addObject("Error", null, null);
@@ -115,9 +108,7 @@ public class SeeDetails extends Page {
         user.getLikedMovies().add(movie);
         movie.likeOp();
 
-        ArrayList<Movie> listOutput = new ArrayList<>();
-        listOutput.add(movie);
-        OutputCreater.addObject(null, listOutput, user);
+        OutputCreater.addObject(movie, user);
     }
 
     private void rate(final ActionsInput actions) {
@@ -131,17 +122,15 @@ public class SeeDetails extends Page {
             return;
         }
         movie.rateOp(actions.getRate(), user);
-        ArrayList<Movie> listOutput = new ArrayList<>();
-        listOutput.add(movie);
-        OutputCreater.addObject(null, listOutput, user);
+        OutputCreater.addObject(movie, user);
     }
 
     @Override
     public Page onPage(final ActionsInput action, final UserDataBase userDB) {
         switch (action.getFeature()) {
-            case "purchase" -> purchase(action);
-            case "watch" -> watch(action);
-            case "like" -> like(action);
+            case "purchase" -> purchase();
+            case "watch" -> watch();
+            case "like" -> like();
             case "rate" -> rate(action);
             default -> OutputCreater.addObject("Error", null, null);
         }

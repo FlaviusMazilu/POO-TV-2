@@ -10,7 +10,7 @@ import java.util.HashMap;
 public final class Authenticated extends Page {
 
     private static Authenticated instance;
-    private HashMap<String, Page> pages;
+    private final HashMap<String, Page> pages;
     private User user;
 
     private Authenticated() {

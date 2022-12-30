@@ -4,11 +4,11 @@ import databases.MoviesDataBase;
 import databases.UserDataBase;
 import input.ActionsInput;
 import pages.Page;
-import utils.User;
 
-public class OnPage extends Command {
+public final class OnPage extends Command {
     @Override
-    public Page execute(Page page, ActionsInput action, UserDataBase userDB, MoviesDataBase moviesDB) {
+    public Page execute(final Page page, final ActionsInput action,
+                        final UserDataBase userDB, final MoviesDataBase mDB) {
         return page.onPage(action, userDB);
     }
 }

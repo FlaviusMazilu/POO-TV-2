@@ -8,9 +8,6 @@ public final class Credentials {
     private String accountType;
     private String country;
     private String balance;
-    public Credentials() {
-
-    }
 
     public Credentials(final Credentials credentials) {
         this.name = credentials.name;

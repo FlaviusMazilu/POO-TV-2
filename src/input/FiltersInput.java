@@ -8,15 +8,7 @@ public final class FiltersInput {
         return contains;
     }
 
-    public void setContains(final ContainsInput contains) {
-        this.contains = contains;
-    }
-
     public SortInput getSort() {
         return sort;
-    }
-
-    public void setSort(final SortInput sort) {
-        this.sort = sort;
     }
 }

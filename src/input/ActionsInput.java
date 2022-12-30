@@ -1,7 +1,5 @@
 package input;
 
-import utils.Movie;
-
 public final class ActionsInput {
     private String subscribedGenre;
     private String type;
@@ -54,16 +52,8 @@ public final class ActionsInput {
         return startsWith;
     }
 
-    public void setStartsWith(final String startsWith) {
-        this.startsWith = startsWith;
-    }
-
     public FiltersInput getFilters() {
         return filters;
-    }
-
-    public void setFilters(final FiltersInput filters) {
-        this.filters = filters;
     }
 
     public String getMovie() {
@@ -78,47 +68,20 @@ public final class ActionsInput {
         return rate;
     }
 
-    public void setRate(final int rate) {
-        this.rate = rate;
-    }
-
     public int getCount() {
         return count;
-    }
-
-    public void setCount(final int count) {
-        this.count = count;
-    }
-
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(final String objectType) {
-        this.objectType = objectType;
     }
 
     public String getSubscribedGenre() {
         return subscribedGenre;
     }
 
-    public void setSubscribedGenre(String subscribedGenre) {
-        this.subscribedGenre = subscribedGenre;
-    }
-
     public MovieInput getAddedMovie() {
         return addedMovie;
-    }
-
-    public void setAddedMovie(MovieInput addedMovie) {
-        this.addedMovie = addedMovie;
     }
 
     public String getDeletedMovie() {
         return deletedMovie;
     }
 
-    public void setDeletedMovie(String deletedMovie) {
-        this.deletedMovie = deletedMovie;
-    }
 }

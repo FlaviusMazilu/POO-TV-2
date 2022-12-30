@@ -2,11 +2,9 @@ package pages;
 import databases.UserDataBase;
 import input.ActionsInput;
 
-import java.util.LinkedList;
-
 public final class LogoutPage extends Page {
     private static LogoutPage instance;
-    private static Page page;
+
     private LogoutPage() {
 
     }
@@ -24,18 +22,6 @@ public final class LogoutPage extends Page {
     }
 
     @Override
-    public Page defaultAction() {
-        Authenticated.getInstance().setUser(null);
-        page = NotAuthenticated.getInstance();
-        // the number of pages that you can go back to turns to 0
-//        pagesStack = new LinkedList<>();
-        return page;
-    }
-    private void logout() {
-        page = NotAuthenticated.getInstance();
-        Authenticated.getInstance().setUser(null);
-    }
-    @Override
     public Page changePage(final ActionsInput action) {
         return this;
     }
@@ -44,11 +30,6 @@ public final class LogoutPage extends Page {
      * The default method that is executed when switching to Pages.LogoutPage
      * @return Pages.NotAuthenticated page
      */
-    public Page actionLogout() {
-        logout();
-        return NotAuthenticated.getInstance();
-    }
-
     @Override
     public Page onPage(final ActionsInput action, final UserDataBase userDB) {
         return this;

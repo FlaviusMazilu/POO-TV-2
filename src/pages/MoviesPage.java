@@ -1,6 +1,9 @@
 package pages;
 
-import input.*;
+import input.ActionsInput;
+import input.ContainsInput;
+import input.SortInput;
+import input.FiltersInput;
 import utils.Movie;
 import utils.User;
 import utils.OutputCreater;
@@ -12,7 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public final class MoviesPage extends Page {
-    private HashMap<String, Page> pages;
+    private final HashMap<String, Page> pages;
     private static MoviesPage instance;
     private ArrayList<Movie> movies;
 
@@ -168,7 +171,7 @@ public final class MoviesPage extends Page {
         }
         String duration = sortInput.getDuration();
         String rating = sortInput.getRating();
-        movies.sort(new Comparator<Movie>() {
+        movies.sort(new Comparator<>() {
         @Override
         public int compare(final Movie o1, final Movie o2) {
             if (duration != null && duration.equals("decreasing")) {

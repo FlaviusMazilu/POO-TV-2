@@ -2,8 +2,6 @@ package databases;
 
 import utils.Credentials;
 import utils.User;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class UserDataBase {
@@ -31,7 +29,7 @@ public final class UserDataBase {
     }
 
     /**
-     * It adds a user to the database if one with the same name doesn't already exists
+     * It adds a user to the database if one with the same name doesn't already exist
      * @param user user to be added
      */
     public void addUser(final User user) {
@@ -47,7 +45,6 @@ public final class UserDataBase {
      */
     public User getUser(final Credentials credentials) {
         String name = credentials.getName();
-        String password = credentials.getPassword();
         if (database.containsKey(name)) {
             User user = database.get(name);
             if (user.getCredentials().getPassword().compareTo(credentials.getPassword()) == 0) {

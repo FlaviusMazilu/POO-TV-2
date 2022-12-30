@@ -2,7 +2,6 @@ package databases;
 
 import input.ActionsInput;
 import utils.*;
-import databases.MoviesDataBase;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -38,22 +37,12 @@ public final class MoviesDataBase implements Observable {
     }
 
     /**
-     * The method adds a movie to the database in case the movie name doesn't already exists
+     * The method adds a movie to the database in case the movie name doesn't already exist
      * @param movie the movie that should be added to the database
      */
     public void addMovie(final Movie movie) {
         movies.put(movie.getName(), movie);
     }
-
-    /**
-     *
-     * @param name is the name of the movie that should be returned
-     * @return the movie with the specified name
-     */
-    public Movie getMovie(final String name) {
-        return movies.get(name);
-    }
-
 
     /**
      * Regardless of the implementation of the database, it creates a list of all the movies
@@ -68,10 +57,16 @@ public final class MoviesDataBase implements Observable {
         return list;
     }
 
-    public void addDeleteMovie(ActionsInput action) {
+    /**
+     * Method to Delete/Add a movie based on action input
+     * @param action: action from input
+     */
+    public void addDeleteMovie(final ActionsInput action) {
         String feature = action.getFeature();
         Movie movie;
         if (feature.equals("add")) {
+            // if the movie which is wanted to be added is already part of the database
+            // print error
             movie = new Movie(action.getAddedMovie());
             if (movies.containsKey(movie.getName())) {
                 OutputCreater.addObject("Error", null, null);
@@ -91,7 +86,7 @@ public final class MoviesDataBase implements Observable {
     }
 
     @Override
-    public void notifyObservers(Movie movie, String feature) {
+    public void notifyObservers(final Movie movie, final String feature) {
         Notification notification;
         if (feature.equals("add")) {
             notification = new Notification(movie.getName(), "ADD");
@@ -101,6 +96,7 @@ public final class MoviesDataBase implements Observable {
 
         for (Map.Entry<String, User> entry : userDB.getDatabase().entrySet()) {
             User user = entry.getValue();
+            // notify every user, and he chooses if he wants to do to something with it
             user.update(notification, movie);
         }
     }

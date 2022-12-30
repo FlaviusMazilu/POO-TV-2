@@ -17,8 +17,4 @@ public final class ContainsInput {
     public ArrayList<String> getGenre() {
         return genre;
     }
-
-    public void setGenre(final ArrayList<String> genre) {
-        this.genre = genre;
-    }
 }

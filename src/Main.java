@@ -2,7 +2,11 @@ import commands.Invoker;
 import databases.MoviesDataBase;
 import databases.UserDataBase;
 import pages.*;
-import utils.*;
+import utils.IO;
+import utils.User;
+import utils.Movie;
+import utils.Credentials;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import input.*;
@@ -11,7 +15,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Main {
+public final class Main {
+    private Main() {
+    }
 
     /**
      * Method adds the users from the input to the database
@@ -53,7 +59,7 @@ public class Main {
             page.setPages();
         }
     }
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
 
         Page page = NotAuthenticated.getInstance();
         final UserDataBase userDB = new UserDataBase();

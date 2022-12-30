@@ -2,11 +2,8 @@ package utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import databases.MoviesDataBase;
-import pages.Authenticated;
-import pages.MoviesPage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,16 +16,24 @@ public final class User implements Observer {
     private ArrayList<Movie> likedMovies;
     private ArrayList<Movie> ratedMovies;
     @JsonIgnore
-    private HashMap<String, Double> ratings;
+    private final HashMap<String, Double> ratings;
 
     private ArrayList<Notification> notifications;
     @JsonIgnore
-    private ArrayList<String> subscribedGenres;
+    private final ArrayList<String> subscribedGenres;
 
-    public void addSubscription(String genre) {
+    /**
+     * Method to add the given genre to the lists of subscribed genres
+     * @param genre: genre of movie to subscribe to
+     */
+    public void addSubscription(final String genre) {
         subscribedGenres.add(genre);
     }
 
+    /**
+     * Method to find out the name of the movie to be recommended
+     * @return Movie to be recommended for this user
+     */
     public String checkMovieRecommended() {
         HashMap<String, Integer> genresLiked = new HashMap<>();
         for (Movie movieLiked : likedMovies) {
@@ -91,15 +96,18 @@ public final class User implements Observer {
     }
 
     @Override
-    public void update(Notification notification, Movie movie) {
+    public void update(final Notification notification, final Movie movie) {
         if (notification.getMessage().equals("Recommendation")) {
             notifications.add(notification);
             return;
         }
+        // search through subscribed genres to find if the movie notified about it is of interest
         for (String subscribedGenre : subscribedGenres) {
             int ok = 0;
             for (String movieGenre: movie.getGenres()) {
                 if (movieGenre.equals(subscribedGenre)) {
+                    // if movie is of interest, queue the notification
+                    // otherwise drops it
                     notifications.add(notification);
                     ok = 1;
                     break;
@@ -111,7 +119,8 @@ public final class User implements Observer {
         }
         if (notification.getMessage().equals("DELETE")) {
             for (Movie movieAux : purchasedMovies) {
-                // if it has been deleted
+                // if the update is about a movie deleted, checks if the user has it
+                // if yes, removes it from its lists and adds tokens/freeMovies
                 if (movieAux.getName().equals(movie.getName())) {
                     purchasedMovies.remove(movieAux);
                     likedMovies.remove(movieAux);
@@ -258,7 +267,7 @@ public final class User implements Observer {
         return notifications;
     }
 
-    public void setNotifications(ArrayList<Notification> notifications) {
+    public void setNotifications(final ArrayList<Notification> notifications) {
         this.notifications = notifications;
     }
 
@@ -266,19 +275,16 @@ public final class User implements Observer {
         return subscribedGenres;
     }
 
-    public void setSubscribedGenres(ArrayList<String> subscribedGenres) {
-        this.subscribedGenres = subscribedGenres;
-    }
-
     public HashMap<String, Double> getRatings() {
         return ratings;
     }
 
-    public void setRatings(HashMap<String, Double> ratings) {
-        this.ratings = ratings;
-    }
-
-    public boolean userhasLiked(String name) {
+    /**
+     * Checks whether the user has watched a movie
+     * @param name: name of the movie to check if watched
+     * @return true if watched, false if not
+     */
+    public boolean userhasLiked(final String name) {
         for (Movie movie : likedMovies) {
             if (movie.getName().equals(name)) {
                 return true;

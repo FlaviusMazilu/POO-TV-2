@@ -38,6 +38,7 @@ public final class Movie {
         this.numLikes = movie.numLikes;
         this.name = movie.name;
         this.rating = movie.rating;
+        this.individualRating = movie.individualRating;
     }
 
     public Movie(final MovieInput movieInput) {
@@ -49,11 +50,19 @@ public final class Movie {
         this.countriesBanned = movieInput.getCountriesBanned();
     }
 
+    /**
+     * Method to increase the number of likes of this movie
+     */
     public void likeOp() {
         numLikes++;
     }
 
-    public boolean hasGenre(String genre) {
+    /**
+     * Method to find if the movie is part of a genre
+     * @param genre: name of the genre
+     * @return true if this movie is part of the genre passed as argument
+     */
+    public boolean hasGenre(final String genre) {
         for (String genreMovie : getGenres()) {
             if (genre.equals(genreMovie)) {
                 return true;
@@ -62,7 +71,12 @@ public final class Movie {
         return false;
     }
 
-    public void rateOp(final double rate, User user) {
+    /**
+     * Method to rate this movie
+     * @param rate: the rating accorded
+     * @param user: who gave the rating
+     */
+    public void rateOp(final double rate, final User user) {
         if (user.getRatings().containsKey(name)) {
             double ratingAcc = user.getRatings().get(name);
             sumRates -= ratingAcc;
@@ -138,14 +152,6 @@ public final class Movie {
         this.numRatings = nrRates;
     }
 
-    public double getSumRates() {
-        return sumRates;
-    }
-
-    public void setSumRates(final double sumRates) {
-        this.sumRates = sumRates;
-    }
-
     public double getRating() {
         return rating;
     }
@@ -162,11 +168,4 @@ public final class Movie {
         this.duration = duration;
     }
 
-    public double getIndividualRating() {
-        return individualRating;
-    }
-
-    public void setIndividualRating(double individualRating) {
-        this.individualRating = individualRating;
-    }
 }

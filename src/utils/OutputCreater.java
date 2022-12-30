@@ -37,11 +37,27 @@ public abstract class OutputCreater {
         IO.output.add((objectNode));
     }
 
-    public static void addObject(User user) {
+    /**
+     * Wrapper for the only use case in which the currentMoviesList it's a
+     * null and not an empty list
+     * @param user the logged-in user
+     */
+    public static void addObject(final User user) {
         ObjectNode objectNode = IO.objectMapper.createObjectNode();
         objectNode.put("error", (JsonNode) null);
         objectNode.put("currentMoviesList", (JsonNode) null);
         objectNode.putPOJO("currentUser", new User(user));
         IO.output.add((objectNode));
+    }
+
+    /**
+     * Wrapper for when currentMoviesList it's only a movie
+     * @param movie: movie at currentMoviesList
+     * @param user logged-in user
+     */
+    public static void addObject(final Movie movie, final User user) {
+        ArrayList<Movie> listOutput = new ArrayList<>();
+        listOutput.add(movie);
+        addObject(null, listOutput, user);
     }
 }

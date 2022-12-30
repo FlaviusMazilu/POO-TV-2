@@ -10,6 +10,7 @@ public final class LogoutPage extends Page {
     private LogoutPage() {
 
     }
+
     /**
      * Singleton Pattern for creating only one instance of the Pages.LogoutPage class
      * @return returns the only once instance created

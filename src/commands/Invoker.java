@@ -17,8 +17,8 @@ import java.util.LinkedList;
 
 public class Invoker {
     ArrayList<Page> previousPages;
-    private UserDataBase userDB;
-    private MoviesDataBase moviesDB;
+    private final UserDataBase userDB;
+    private final MoviesDataBase moviesDB;
     private Page page;
     private LinkedList<Page> pagesStack;
     public Invoker(UserDataBase userDB, MoviesDataBase moviesDB) {
@@ -35,13 +35,9 @@ public class Invoker {
         if (user != null && user.getCredentials().getAccountType().equals("premium")) {
             String movie = user.checkMovieRecommended();
             Notification notification = new Notification(movie, "Recommendation");
-            user.update(notification);
+            user.update(notification, null);
 
-            ObjectNode objectNode = IO.objectMapper.createObjectNode();
-            objectNode.put("error", (JsonNode) null);
-            objectNode.put("currentMoviesList", (JsonNode) null);
-            objectNode.putPOJO("currentUser", new User(user));
-            IO.output.add((objectNode));
+            OutputCreater.addObject(user);
         }
     }
     public void execute(ActionsInput action) {
@@ -53,6 +49,7 @@ public class Invoker {
         }
 
         if (action.getType().equals("change page")) {
+            // special case ofr change page command, the
             if (Authenticated.getInstance().getUser() != null && pagesStack.size() == 0) {
                 pagesStack.push(Authenticated.getInstance());
             }
@@ -69,17 +66,8 @@ public class Invoker {
             }
             pagesStack.pop();
             page = pagesStack.peek();
-
-            if (page instanceof MoviesPage) {
-                MoviesPage.getInstance().getAllMovies();
-                OutputCreater.addObject(null, MoviesPage.getInstance().getMovies(),
-                        Authenticated.getInstance().getUser());
-            }
-            return;
         }
         String command = action.getType();
         page = CommandsFactory.createCommand(command).execute(page, action, userDB, moviesDB);
     }
-
-
 }

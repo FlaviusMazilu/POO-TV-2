@@ -13,6 +13,7 @@ public class Notification {
         this.movieName = notification.movieName;
         this.message = notification.message;
     }
+
     public String getMovieName() {
         return movieName;
     }

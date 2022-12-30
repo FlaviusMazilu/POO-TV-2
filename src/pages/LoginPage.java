@@ -20,6 +20,7 @@ public final class LoginPage extends Page {
         }
         return instance;
     }
+
     private Page login(final UserDataBase userDB, final Credentials credentials) {
         User user = userDB.getUser(credentials);
         if (user != null) {

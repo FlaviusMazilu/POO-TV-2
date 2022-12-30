@@ -89,11 +89,47 @@ public final class User implements Observer {
         }
         return movieRecommended;
     }
+
     @Override
-    public void update(Notification notification) {
-        notifications.add(notification);
-        //TODO make default action pentru fiecare pagina
+    public void update(Notification notification, Movie movie) {
+        if (notification.getMessage().equals("Recommendation")) {
+            notifications.add(notification);
+            return;
+        }
+        for (String subscribedGenre : subscribedGenres) {
+            int ok = 0;
+            for (String movieGenre: movie.getGenres()) {
+                if (movieGenre.equals(subscribedGenre)) {
+                    notifications.add(notification);
+                    ok = 1;
+                    break;
+                }
+            }
+            if (ok == 1) {
+                break;
+            }
+        }
+        if (notification.getMessage().equals("DELETE")) {
+            for (Movie movieAux : purchasedMovies) {
+                // if it has been deleted
+                if (movieAux.getName().equals(movie.getName())) {
+                    purchasedMovies.remove(movieAux);
+                    likedMovies.remove(movieAux);
+                    ratedMovies.remove(movieAux);
+                    watchedMovies.remove(movieAux);
+
+                    if (getCredentials().getAccountType().equals("premium")) {
+                        setNumFreePremiumMovies(getNumFreePremiumMovies() + 1);
+                    } else {
+                        setTokensCount(getTokensCount() + 2);
+                    }
+                    break;
+
+                }
+            }
+        }
     }
+
     public User(final User user) {
         this.credentials = new Credentials(user.credentials);
         this.likedMovies = deepCopyList(user.getLikedMovies());
@@ -114,6 +150,7 @@ public final class User implements Observer {
         }
         return newList;
     }
+
     private ArrayList<Movie> deepCopyList(final ArrayList<Movie> oldList) {
         ArrayList<Movie> newList = new ArrayList<>();
         for (Movie movie : oldList) {

@@ -1,5 +1,5 @@
 package utils;
 
 public interface Observer {
-    public void update(Notification notification);
+    void update(Notification notification, Movie movie);
 }

@@ -73,26 +73,21 @@ public final class MoviesDataBase implements Observable {
         Movie movie;
         if (feature.equals("add")) {
             movie = new Movie(action.getAddedMovie());
-        } else {
-            movie = new Movie();
-            movie.setName(action.getDeletedMovie());
-        }
-
-        if (feature.equals("add")) {
             if (movies.containsKey(movie.getName())) {
                 OutputCreater.addObject("Error", null, null);
                 return;
             }
             addMovie(movie);
-            notifyObservers(movie, feature);
         } else {
+            movie = new Movie();
+            movie.setName(action.getDeletedMovie());
             String movieName = movie.getName();
             if (movies.remove(movieName) == null) {
                 OutputCreater.addObject("Error", null, null);
                 return;
             }
-            notifyObservers(movie, feature);
         }
+        notifyObservers(movie, feature);
     }
 
     @Override
@@ -106,61 +101,7 @@ public final class MoviesDataBase implements Observable {
 
         for (Map.Entry<String, User> entry : userDB.getDatabase().entrySet()) {
             User user = entry.getValue();
-
-            for (String subscribedGenre : user.getSubscribedGenres()) {
-                int ok = 0;
-                for (String movieGenre: movie.getGenres()) {
-                    if (movieGenre.equals(subscribedGenre)) {
-                        user.update(notification);
-                        ok = 1;
-                        break;
-                    }
-                }
-                if (ok == 1) {
-                    break;
-                }
-            }
-        }
-        if (feature.equals("delete")) {
-            for (Map.Entry<String, User> entry : userDB.getDatabase().entrySet()) {
-                User user = entry.getValue();
-                for (Movie movieAux : user.getPurchasedMovies()) {
-                    // if it has been deleted
-                    if (movieAux.getName().equals(movie.getName())) {
-                        user.getPurchasedMovies().remove(movieAux);
-                        if (user.getCredentials().getAccountType().equals("premium")) {
-                            user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() + 1);
-                        } else {
-                            user.setTokensCount(user.getTokensCount() + 2);
-                        }
-                        break;
-                    }
-                }
-                for (Movie movieAux : user.getWatchedMovies()) {
-                    // if it has been deleted
-                    if (movieAux.getName().equals(movie.getName())) {
-                        user.getWatchedMovies().remove(movieAux);
-                        break;
-                    }
-                }
-                for (Movie movieAux : user.getLikedMovies()) {
-                    // if it has been deleted
-                    if (movieAux.getName().equals(movie.getName())) {
-                        user.getLikedMovies().remove(movieAux);
-                        break;
-                    }
-                }
-                for (Movie movieAux : user.getRatedMovies()) {
-                    // if it has been deleted
-                    if (movieAux.getName().equals(movie.getName())) {
-                        user.getRatedMovies().remove(movieAux);
-                        break;
-                    }
-                }
-                user.getRatings().remove(movie.getName());
-                movies.remove(movie.getName());
-
-            }
+            user.update(notification, movie);
         }
     }
 }

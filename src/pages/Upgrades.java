@@ -35,6 +35,7 @@ public final class Upgrades extends Page {
             return pages.get(action.getPage());
         }
     }
+
     private void buyPremium() {
         User currentUser = Authenticated.getInstance().getUser();
         int tokens = currentUser.getTokensCount();
@@ -45,6 +46,7 @@ public final class Upgrades extends Page {
         currentUser.setTokensCount(tokens - Cons.PRICE_PREMIUM);
         currentUser.getCredentials().setAccountType("premium");
     }
+
     private void buyTokens(final int count) {
         User currentUser = Authenticated.getInstance().getUser();
         int balance = currentUser.getCredentials().convertBalanceInt();
@@ -55,6 +57,7 @@ public final class Upgrades extends Page {
         currentUser.getCredentials().setBalance(balance - count);
         currentUser.setTokensCount(currentUser.getTokensCount() + count);
     }
+
     @Override
     public Page onPage(final ActionsInput action, final UserDataBase userDB) {
         switch (action.getFeature()) {

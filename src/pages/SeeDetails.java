@@ -35,6 +35,7 @@ public class SeeDetails extends Page {
         }
         OutputCreater.addObject("Erorr", null, null);
     }
+
     private SeeDetails() {
         pages = new HashMap<>();
     }
@@ -46,6 +47,7 @@ public class SeeDetails extends Page {
         }
         return instance;
     }
+
     @Override
     public Page changePage(final ActionsInput action) {
         if (!pages.containsKey(action.getPage())) {
@@ -55,6 +57,7 @@ public class SeeDetails extends Page {
             return pages.get(action.getPage());
         }
     }
+
     private void purchase(final ActionsInput action) {
         User user = Authenticated.getInstance().getUser();
         int tokens = user.getTokensCount();
@@ -99,6 +102,7 @@ public class SeeDetails extends Page {
         OutputCreater.addObject(null, listOutput, user);
 
     }
+
     private void like(final ActionsInput action) {
         User user = Authenticated.getInstance().getUser();
         if (!user.userHasWatched(movie.getName())) {

@@ -21,6 +21,7 @@ public final class RegisterPage extends Page {
         }
         return instance;
     }
+
     private Page register(final UserDataBase userDB, final Credentials credentials) {
         User user = new User(credentials);
         if (userDB.hasUser(credentials.getName())) {

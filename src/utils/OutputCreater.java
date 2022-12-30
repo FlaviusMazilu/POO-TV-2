@@ -36,4 +36,12 @@ public abstract class OutputCreater {
         }
         IO.output.add((objectNode));
     }
+
+    public static void addObject(User user) {
+        ObjectNode objectNode = IO.objectMapper.createObjectNode();
+        objectNode.put("error", (JsonNode) null);
+        objectNode.put("currentMoviesList", (JsonNode) null);
+        objectNode.putPOJO("currentUser", new User(user));
+        IO.output.add((objectNode));
+    }
 }

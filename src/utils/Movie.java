@@ -26,6 +26,7 @@ public final class Movie {
     public Movie() {
 
     }
+
     public Movie(final Movie movie) {
         this.duration = movie.duration;
         this.genres = movie.genres;
@@ -38,6 +39,7 @@ public final class Movie {
         this.name = movie.name;
         this.rating = movie.rating;
     }
+
     public Movie(final MovieInput movieInput) {
         this.name = movieInput.getName();
         this.year = movieInput.getYear();
@@ -46,6 +48,7 @@ public final class Movie {
         this.actors = movieInput.getActors();
         this.countriesBanned = movieInput.getCountriesBanned();
     }
+
     public void likeOp() {
         numLikes++;
     }
@@ -58,6 +61,7 @@ public final class Movie {
         }
         return false;
     }
+
     public void rateOp(final double rate, User user) {
         if (user.getRatings().containsKey(name)) {
             double ratingAcc = user.getRatings().get(name);

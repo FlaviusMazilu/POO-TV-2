@@ -7,6 +7,7 @@ public class CommandsFactory {
             case "on page" -> new OnPage();
             case "subscribe" -> new Subscribe();
             case "database" -> new Database();
+            case "back" -> new Back();
             default -> null;
         };
     }

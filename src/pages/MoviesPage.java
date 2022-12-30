@@ -59,6 +59,7 @@ public final class MoviesPage extends Page {
             }
         }
     }
+
     @Override
     public Page changePage(final ActionsInput action) {
         if (!pages.containsKey(action.getPage())) {
@@ -91,6 +92,7 @@ public final class MoviesPage extends Page {
             return pages.get(action.getPage());
         }
     }
+
     private void filterByActors(final ContainsInput containsInput) {
         ArrayList<String> actors = containsInput.getActors();
         if (actors == null) {
@@ -150,6 +152,7 @@ public final class MoviesPage extends Page {
             }
         }
     }
+
     private void filter(final FiltersInput filtersInput) {
         getAllMovies();
         SortInput sortInput = filtersInput.getSort();
@@ -197,6 +200,7 @@ public final class MoviesPage extends Page {
 
 
     }
+
     private void search(final String start) {
         ArrayList<Movie> newList = new ArrayList<>();
 
@@ -208,6 +212,7 @@ public final class MoviesPage extends Page {
         movies = newList;
         OutputCreater.addObject(null, newList, Authenticated.getInstance().getUser());
     }
+
     @Override
     public Page onPage(final ActionsInput action, final UserDataBase userDB) {
         switch (action.getFeature()) {

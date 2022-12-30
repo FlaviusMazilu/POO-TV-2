@@ -8,16 +8,14 @@ import pages.MoviesPage;
 import pages.Page;
 import utils.OutputCreater;
 
-public class ChangePage extends Command{
-
+public class Back extends Command{
     @Override
-    public Page execute(Page page, ActionsInput action, UserDataBase userDB, MoviesDataBase moviesDB) {
-        if (page instanceof MoviesPage && action.getPage().equals("movies")) {
+    public Page execute(Page page, ActionsInput action, UserDataBase userDB, MoviesDataBase moviesDb) {
+        if (page instanceof MoviesPage) {
             MoviesPage.getInstance().getAllMovies();
             OutputCreater.addObject(null, MoviesPage.getInstance().getMovies(),
                     Authenticated.getInstance().getUser());
         }
-//        page = page.changePage(action);
         return page;
     }
 }

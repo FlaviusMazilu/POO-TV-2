@@ -11,6 +11,7 @@ public final class Credentials {
     public Credentials() {
 
     }
+
     public Credentials(final Credentials credentials) {
         this.name = credentials.name;
         this.accountType = credentials.accountType;

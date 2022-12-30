@@ -81,9 +81,5 @@ public class Main {
         ObjectWriter objectWriter = IO.objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(args[1]), IO.output);
 
-        char[] inputPath = args[0].toCharArray();
-        String outputPath = "C:\\Users\\mazil\\IdeaProjects\\proiect2\\checker\\resources\\out\\"
-                + args[1] + inputPath[inputPath.length - 6] + ".json";
-        objectWriter.writeValue(new File(outputPath), IO.output);
     }
 }

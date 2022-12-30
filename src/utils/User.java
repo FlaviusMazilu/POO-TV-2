@@ -2,6 +2,7 @@ package utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import databases.MoviesDataBase;
+import observer.Observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

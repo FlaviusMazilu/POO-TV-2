@@ -20,8 +20,4 @@ public abstract class Page {
         OutputCreater.addObject("Error", null, null);
     }
 
-    public Page defaultAction() {
-        return this;
-    }
-
 }
